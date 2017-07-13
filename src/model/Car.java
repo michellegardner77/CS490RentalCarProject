@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import java.time.Year;
 import java.util.Objects;
