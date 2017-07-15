@@ -1,10 +1,7 @@
-import com.sun.jndi.ldap.Connection;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
-/**
- * Created by mgard on 7/14/2017.
- */
 public class DBManager {
-
     Connection connection;
 
 }
