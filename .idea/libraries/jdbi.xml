@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="jdbi">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/jdbi-2.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbi-2.78.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,10 +1,8 @@
 package model;
 
-import controller.jbdi.CustomerStore;
-
 import java.util.Objects;
 
-public class Customer implements CustomerStore{
+public class Customer {
     private String name;
     private String phone;
     private String address;

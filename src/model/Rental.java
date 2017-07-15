@@ -6,12 +6,12 @@ import java.util.Objects;
 public class Rental {
     private Calendar rentDate;
     private Calendar returnDate;
-    private RentalStatus status;
+    private RentalStatusEnum status;
 
     public Rental() {
     }
 
-    public Rental(final Calendar rentDate, final Calendar returnDate, final RentalStatus status) {
+    public Rental(final Calendar rentDate, final Calendar returnDate, final RentalStatusEnum status) {
         this.rentDate = rentDate;
         this.returnDate = returnDate;
         this.status = status;
@@ -35,11 +35,11 @@ public class Rental {
         return this;
     }
 
-    public RentalStatus getStatus() {
+    public RentalStatusEnum getStatus() {
         return status;
     }
 
-    public Rental setStatus(final RentalStatus status) {
+    public Rental setStatus(final RentalStatusEnum status) {
         this.status = status;
         return this;
     }
