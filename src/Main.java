@@ -6,16 +6,13 @@ import javafx.fxml.FXMLLoader;
 
 import java.util.SimpleTimeZone;
 
-/**
- * Created by mgard on 7/14/2017.
- */
 public class Main extends Application{
 
 
     private static Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("view/landing.fxml")); // fix later
         primaryStage.setTitle("Rental Cars");
         primaryStage.setResizable(false);

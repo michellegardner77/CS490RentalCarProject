@@ -1,11 +1,9 @@
 package model;
 
-import controller.jbdi.CarSpecStore;
-
 import java.time.Year;
 import java.util.Objects;
 
-public class CarSpec implements CarSpecStore {
+public class CarSpec {
     private String make;
     private String model;
     private Year year;
