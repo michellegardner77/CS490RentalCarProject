@@ -1,9 +1,11 @@
 package model;
 
+import controller.jbdi.RentalStore;
+
 import java.util.Calendar;
 import java.util.Objects;
 
-public class Rental {
+public class Rental implements RentalStore{
     private Calendar rentDate;
     private Calendar returnDate;
     private RentalStatus status;
