@@ -1,0 +1,14 @@
+
+1) define method headers in controller.CarRental for method calls we think we'll need.
+
+2) link UI to those methods and confirm UI hits that shit.
+
+3) plan DAL overarching shape
+
+4) enable switch through scene functionality. No logic, just window change
+
+5) if valid customer clicked and button hit, landing gets killed and second window pops up with customer name.
+    i) pull the fields from the ui
+    ii) debug to ensure they're getting pulled
+    iii) debug to ensure their sending to the new window.
+    iv) new window pops up and has customer shit in it.
