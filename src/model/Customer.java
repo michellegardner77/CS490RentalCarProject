@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class Customer {
+public class Customer implements Searchable{
     private String name;
     private String phone;
     private String address;
@@ -64,5 +64,10 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" + "name='" + name + '\'' + ", phone='" + phone + '\'' + ", address='" + address + '\'' + '}';
+    }
+
+    @Override
+    public boolean contains(final String subString) {
+        return this.toString().toLowerCase().contains(subString.toLowerCase());
     }
 }
