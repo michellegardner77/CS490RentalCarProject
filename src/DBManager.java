@@ -40,19 +40,19 @@ public class DBManager {
 
 
     //Filing table with Users
-    public List<Customer> getCustomers(){
-        PreparedStatement stmt;
-
-        String query = "SELECT customer_frist_name, customer_last_name, customer_phone, customer_address" +
-                "From customer";
-
-        ResultSet rs;
-
-        try{
-            stmt = connection.prepareStatement(query);
-            stmt.setString()
-        }
-    }
+//    public List<Customer> getCustomers(){
+//        PreparedStatement stmt;
+//
+//        String query = "SELECT customer_frist_name, customer_last_name, customer_phone, customer_address" +
+//                "From customer";
+//
+//        ResultSet rs;
+//
+//        try{
+//            stmt = connection.prepareStatement(query);
+//            stmt.setString()
+//        }
+//    }
 
 
 }
