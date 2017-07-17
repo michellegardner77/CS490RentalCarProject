@@ -8,12 +8,12 @@ public class CarSpec {
     private String make;
     private String model;
     private Year year;
-    private CarSize size;
+    private CarSizeEnum size;
 
     public CarSpec() {
     }
 
-    public CarSpec(final String carId, final String make, final String model, final Year year, final CarSize size) {
+    public CarSpec(final String carId, final String make, final String model, final Year year, final CarSizeEnum size) {
         this.carId = carId;
         this.make = make;
         this.model = model;
@@ -57,11 +57,11 @@ public class CarSpec {
         return this;
     }
 
-    public CarSize getSize() {
+    public CarSizeEnum getSize() {
         return size;
     }
 
-    public CarSpec setSize(final CarSize size) {
+    public CarSpec setSize(final CarSizeEnum size) {
         this.size = size;
         return this;
     }

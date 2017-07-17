@@ -1,5 +1,5 @@
 package model;
 
-public enum CarSize {
+public enum CarSizeEnum {
     small, midsize, large
 }
