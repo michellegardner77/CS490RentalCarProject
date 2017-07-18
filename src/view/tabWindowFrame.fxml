@@ -11,7 +11,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Rental Car System" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<TitledPane animated="false" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Rental Car System" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
   <content>
     <AnchorPane fx:id="tabWindowAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
          <children>
@@ -24,13 +24,17 @@
                            <children>
                               <TableView fx:id="findCarTable" layoutX="31.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="445.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="54.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                  <TableColumn prefWidth="75.0" sortable="false" text="Select" />
+                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="ID" />
+                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Make" />
+                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Model" />
+                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Year" />
+                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Size" />
                                 </columns>
                               </TableView>
                               <TextField fx:id="findCarSearchField" layoutX="28.0" layoutY="14.0" prefHeight="27.0" prefWidth="333.0" AnchorPane.bottomAnchor="217.0" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="145.0" AnchorPane.topAnchor="14.0" />
-                              <Button fx:id="rentSelectedButton" layoutX="373.0" layoutY="217.0" mnemonicParsing="false" text="Rent Selected" AnchorPane.leftAnchor="373.0" AnchorPane.topAnchor="14.0" />
-                              <Button fx:id="searchButton" layoutX="373.0" layoutY="217.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="104.0" text="Search" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="373.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="217.0" />
+                              <Button fx:id="rentSelectedButton" layoutX="372.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#rentSelectedButtonClicked" text="Rent Selected" AnchorPane.leftAnchor="372.0" AnchorPane.topAnchor="217.0" />
+                              <Button fx:id="searchButton" layoutX="372.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#findCarSearchButtonClicked" prefHeight="27.0" prefWidth="104.0" text="Search" AnchorPane.bottomAnchor="217.0" AnchorPane.leftAnchor="372.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="14.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -41,11 +45,15 @@
                            <children>
                               <TableView fx:id="rentedCarsTable" layoutX="14.0" layoutY="14.0" prefHeight="199.0" prefWidth="475.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                    <TableColumn prefWidth="52.99999809265137" sortable="false" text="Select" />
+                                    <TableColumn editable="false" prefWidth="83.00003814697266" sortable="false" text="ID" />
+                                    <TableColumn editable="false" prefWidth="90.0" sortable="false" text="Make" />
+                                    <TableColumn editable="false" prefWidth="87.0" sortable="false" text="Model" />
+                                    <TableColumn editable="false" prefWidth="78.0" sortable="false" text="Year" />
+                                    <TableColumn editable="false" prefWidth="86.99993896484375" sortable="false" text="Size" />
                                 </columns>
                               </TableView>
-                              <Button fx:id="returnSelectedButton" layoutX="361.0" layoutY="223.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="131.0" text="Return Selected" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="361.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="223.0" />
+                              <Button fx:id="returnSelectedButton" layoutX="361.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#returnSelectedButtonClicked" prefHeight="27.0" prefWidth="131.0" text="Return Selected" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="361.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="223.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -56,8 +64,12 @@
                            <children>
                               <TableView fx:id="returnedCarTable" layoutX="14.0" layoutY="14.0" prefHeight="232.0" prefWidth="476.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="ID" />
+                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Make" />
+                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Model" />
+                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Year" />
+                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Rented" />
+                                    <TableColumn editable="false" prefWidth="101.99996948242188" sortable="false" text="Returned" />
                                 </columns>
                               </TableView>
                            </children>
@@ -69,6 +81,7 @@
                   <Insets />
                </opaqueInsets>
             </TabPane>
+            <Button fx:id="returnToCustomerSelectionButton" layoutX="379.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#returnToCustomerSelectionButtonClicked" prefHeight="27.0" prefWidth="205.0" text="Return to Customer Selection" />
          </children></AnchorPane>
   </content>
 </TitledPane>

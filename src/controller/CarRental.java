@@ -39,9 +39,10 @@ public class CarRental {
 //        return null;
 //    }
 
-    public HashMap<Car, CarSpec> getOutstandingRentalsForCustomer(String name){
-        if (rentalListByCustomerMap.containsKey(name)){
-            //final HashMap<Car, CarSpec>
+    public HashMap<Car, CarSpec> getOutstandingRentalsForCustomer(Customer customer){
+        if (rentalListByCustomerMap.containsKey(customer)){
+            final HashMap<Car, CarSpec> rentedCarsAndSpecsMap = new HashMap<>();
+            rentalListByCustomerMap.get(customer).forEach(car -> );
         }
 
         return null;
