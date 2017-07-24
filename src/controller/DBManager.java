@@ -2,8 +2,10 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Properties;
 
 public class DBManager {
@@ -22,7 +24,7 @@ public class DBManager {
         return singletonInstance;
     }
 
-    private static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -41,9 +43,24 @@ public class DBManager {
         }
     }
 
-    public static ResultSet executeQuery(String query) throws SQLException {
+    public ResultSet executeQuery(String query) throws SQLException {
         Connection connection = getConnection();
 
         return connection.prepareStatement(query).executeQuery();
+    }
+
+    public ResultSet executePreparedStatement(String query, Map<Integer, String> params) throws SQLException {
+        Connection connection = getConnection();
+
+        final PreparedStatement statement = connection.prepareStatement(query);
+        params.forEach((k, v) -> {
+            try {
+                statement.setString(k, v);
+            } catch (final SQLException e){
+                throw new RuntimeException(e);
+            }
+        });
+
+        return statement.executeQuery();
     }
 }

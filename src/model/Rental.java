@@ -3,7 +3,7 @@ package model;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class Rental {
+public class Rental implements Searchable {
     private Calendar rentDate;
     private Calendar returnDate;
     private RentalStatusEnum status;
@@ -76,5 +76,10 @@ public class Rental {
     @Override
     public String toString() {
         return "Rental{" + "rentDate=" + rentDate + ", returnDate=" + returnDate + ", status=" + status + ", carId='" + carId + '\'' + '}';
+    }
+
+    @Override
+    public boolean contains(final String subString) {
+        return this.toString().toLowerCase().contains(subString.toLowerCase());
     }
 }

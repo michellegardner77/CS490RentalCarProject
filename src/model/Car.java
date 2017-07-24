@@ -1,18 +1,15 @@
 package model;
 
-import java.time.Year;
 import java.util.Objects;
 
 public class Car {
     private String id;
-
 
     public Car() {
     }
 
     public Car(final String id) {
         this.id = id;
-
     }
 
     public String getId() {
