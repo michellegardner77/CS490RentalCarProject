@@ -2,7 +2,6 @@ package DAL;
 
 import model.Car;
 
-@Deprecated
 public class CarRepository implements IRepository<Car> {
     @Override
     public Iterable<Car> GetAll() {

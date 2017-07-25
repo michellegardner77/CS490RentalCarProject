@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -8,80 +7,196 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TitledPane animated="false" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Rental Car System" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-  <content>
-    <AnchorPane fx:id="tabWindowAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-         <children>
-            <Label fx:id="nameAndAccountLabel" layoutX="24.0" layoutY="23.0" text="Welcome back, {name}" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
-            <TabPane fx:id="carTabPane" layoutX="31.0" layoutY="65.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="531.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="45.0">
-              <tabs>
-                <Tab fx:id="findCarTab" closable="false" text="Find Car">
-                  <content>
-                    <AnchorPane fx:id="findCarAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="506.0">
-                           <children>
-                              <TableView fx:id="findCarTable" layoutX="31.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="445.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="54.0">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" sortable="false" text="Select" />
-                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="ID" />
-                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Make" />
-                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Model" />
-                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Year" />
-                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Size" />
-                                </columns>
-                              </TableView>
-                              <TextField fx:id="findCarSearchField" layoutX="28.0" layoutY="14.0" prefHeight="27.0" prefWidth="333.0" AnchorPane.bottomAnchor="217.0" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="145.0" AnchorPane.topAnchor="14.0" />
-                              <Button fx:id="rentSelectedButton" layoutX="372.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#rentSelectedButtonClicked" text="Rent Selected" AnchorPane.leftAnchor="372.0" AnchorPane.topAnchor="217.0" />
-                              <Button fx:id="searchButton" layoutX="372.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#findCarSearchButtonClicked" prefHeight="27.0" prefWidth="104.0" text="Search" AnchorPane.bottomAnchor="217.0" AnchorPane.leftAnchor="372.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="14.0" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab fx:id="rentedCarsTab" closable="false" text="Rented Cars">
-                  <content>
-                    <AnchorPane fx:id="rentedCarsAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TableView fx:id="rentedCarsTable" layoutX="14.0" layoutY="14.0" prefHeight="199.0" prefWidth="475.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-                                <columns>
-                                    <TableColumn prefWidth="52.99999809265137" sortable="false" text="Select" />
-                                    <TableColumn editable="false" prefWidth="83.00003814697266" sortable="false" text="ID" />
-                                    <TableColumn editable="false" prefWidth="90.0" sortable="false" text="Make" />
-                                    <TableColumn editable="false" prefWidth="87.0" sortable="false" text="Model" />
-                                    <TableColumn editable="false" prefWidth="78.0" sortable="false" text="Year" />
-                                    <TableColumn editable="false" prefWidth="86.99993896484375" sortable="false" text="Size" />
-                                </columns>
-                              </TableView>
-                              <Button fx:id="returnSelectedButton" layoutX="361.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#returnSelectedButtonClicked" prefHeight="27.0" prefWidth="131.0" text="Return Selected" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="361.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="223.0" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                  <Tab fx:id="returnedCarsTab" closable="false" text="Returned Cars">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TabWindowFrameController">
+    <children>
+        <Label fx:id="selectedCustomer0Label" layoutX="37.0" layoutY="43.0" prefHeight="17.0" prefWidth="45.0" text="name" />
+        <Label layoutX="103.0" layoutY="43.0" text="'s Account" />
+        <TabPane layoutX="31.0" layoutY="74.0" prefHeight="307.0" prefWidth="536.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab fx:id="findCarTabPane" text="Find Car">
                     <content>
-                      <AnchorPane fx:id="returnedCarsAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TableView fx:id="returnedCarTable" layoutX="14.0" layoutY="14.0" prefHeight="232.0" prefWidth="476.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-                                <columns>
-                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="ID" />
-                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Make" />
-                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Model" />
-                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Year" />
-                                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Rented" />
-                                    <TableColumn editable="false" prefWidth="101.99996948242188" sortable="false" text="Returned" />
-                                </columns>
-                              </TableView>
-                           </children>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="findCarTable" layoutX="14.0" layoutY="107.0" prefHeight="155.0" prefWidth="509.0">
+                                    <columns>
+                                        <TableColumn prefWidth="57.0" text="Select" />
+                                        <TableColumn prefWidth="74.0" text="ID" />
+                                        <TableColumn prefWidth="112.0" text="Make" />
+                                        <TableColumn prefWidth="112.0" text="Model" />
+                                        <TableColumn prefWidth="77.0" text="Year" />
+                                        <TableColumn prefWidth="76.0" text="Size" />
+                                    </columns>
+                                </TableView>
+                                <Button fx:id="findCarSearchButton" layoutX="407.0" layoutY="23.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Search" />
+                                <TextField fx:id="findCarSearchTextField" layoutX="21.0" layoutY="23.0" prefHeight="25.0" prefWidth="353.0" />
+                                <Button layoutX="21.0" layoutY="62.0" mnemonicParsing="false" text="Rent Selected" />
+                            </children>
                         </AnchorPane>
                     </content>
-                  </Tab>
-              </tabs>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </TabPane>
-            <Button fx:id="returnToCustomerSelectionButton" layoutX="379.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#returnToCustomerSelectionButtonClicked" prefHeight="27.0" prefWidth="205.0" text="Return to Customer Selection" />
-         </children></AnchorPane>
-  </content>
-</TitledPane>
+                </Tab>
+                <Tab fx:id="rentedCarsTabPane" text="Rented Cars">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="rentedCarsTable" layoutX="14.0" layoutY="84.0" prefHeight="180.0" prefWidth="509.0">
+                                    <columns>
+                                        <TableColumn prefWidth="57.0" text="Select" />
+                                        <TableColumn prefWidth="112.0" text="Make" />
+                                        <TableColumn prefWidth="130.0" text="Model" />
+                                        <TableColumn prefWidth="108.0" text="Year" />
+                                        <TableColumn prefWidth="101.0" text="Rented" />
+                                    </columns>
+                                </TableView>
+                                <Button fx:id="returnSelectedButton" layoutX="14.0" layoutY="26.0" mnemonicParsing="false" text="Return Selected" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="returnedCarsTabPane" text="Returned Cars">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="returnedCarsTable" layoutX="13.0" layoutY="34.0" prefHeight="222.0" prefWidth="509.0">
+                                    <columns>
+                                        <TableColumn prefWidth="61.0" text="ID" />
+                                        <TableColumn prefWidth="89.0" text="Make" />
+                                        <TableColumn prefWidth="75.0" text="Model" />
+                                        <TableColumn prefWidth="75.0" text="Year" />
+                                        <TableColumn prefWidth="107.0" text="Rented" />
+                                        <TableColumn prefWidth="93.0" text="Returned" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>
+
+
+
+
+
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+
+<!--<?import javafx.geometry.Insets?>-->
+<!--<?import javafx.scene.control.Button?>-->
+<!--<?import javafx.scene.control.Label?>-->
+<!--<?import javafx.scene.control.Tab?>-->
+<!--<?import javafx.scene.control.TabPane?>-->
+<!--<?import javafx.scene.control.TableColumn?>-->
+<!--<?import javafx.scene.control.TableView?>-->
+<!--<?import javafx.scene.control.TextField?>-->
+<!--<?import javafx.scene.control.TitledPane?>-->
+<!--<?import javafx.scene.layout.AnchorPane?>-->
+
+<!--<TitledPane animated="false" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"-->
+            <!--minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Rental Car System"-->
+            <!--xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">-->
+    <!--<AnchorPane fx:id="tabWindowAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">-->
+        <!--<Label fx:id="nameAndAccountLabel" layoutX="24.0" layoutY="23.0" text="Welcome back, {name}"-->
+               <!--AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0"/>-->
+        <!--<TabPane fx:id="carTabPane" layoutX="31.0" layoutY="65.0" maxHeight="-Infinity" maxWidth="-Infinity"-->
+                 <!--minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="531.0"-->
+                 <!--tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="36.0"-->
+                 <!--AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="45.0">-->
+            <!--<opaqueInsets>-->
+                <!--<Insets/>-->
+            <!--</opaqueInsets>-->
+            <!--<Tab fx:id="findCarTab" closable="false" text="Find Car">-->
+                <!--<AnchorPane fx:id="findCarAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity"-->
+                            <!--minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="506.0">-->
+                    <!--<TableView fx:id="findCarTable" layoutX="31.0" layoutY="54.0" maxHeight="-Infinity"-->
+                               <!--maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"-->
+                               <!--prefHeight="151.0" prefWidth="445.0" AnchorPane.bottomAnchor="53.0"-->
+                               <!--AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="30.0"-->
+                               <!--AnchorPane.topAnchor="54.0">-->
+                        <!--<columns>-->
+                            <!--<TableColumn prefWidth="75.0" sortable="false" text="Select"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false" text="ID"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Make"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Model"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Year"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Size"/>-->
+                        <!--</columns>-->
+                    <!--</TableView>-->
+                    <!--<TextField fx:id="findCarSearchField" layoutX="28.0" layoutY="14.0"-->
+                               <!--prefHeight="27.0" prefWidth="333.0" AnchorPane.bottomAnchor="217.0"-->
+                               <!--AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="145.0"-->
+                               <!--AnchorPane.topAnchor="14.0"/>-->
+                    <!--<Button fx:id="rentSelectedButton" layoutX="372.0" layoutY="217.0"-->
+                            <!--mnemonicParsing="false" onMouseClicked="#rentSelectedButtonClicked"-->
+                            <!--text="Rent Selected" AnchorPane.leftAnchor="372.0"-->
+                            <!--AnchorPane.topAnchor="217.0"/>-->
+                    <!--<Button fx:id="searchButton" layoutX="372.0" layoutY="14.0" mnemonicParsing="false"-->
+                            <!--onMouseClicked="#findCarSearchButtonClicked" prefHeight="27.0"-->
+                            <!--prefWidth="104.0" text="Search" AnchorPane.bottomAnchor="217.0"-->
+                            <!--AnchorPane.leftAnchor="372.0" AnchorPane.rightAnchor="30.0"-->
+                            <!--AnchorPane.topAnchor="14.0"/>-->
+                <!--</AnchorPane>-->
+            <!--</Tab>-->
+            <!--<Tab fx:id="rentedCarsTab" closable="false" text="Rented Cars">-->
+                <!--<AnchorPane fx:id="rentedCarsAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0"-->
+                            <!--prefWidth="200.0">-->
+                    <!--<TableView fx:id="rentedCarsTable" layoutX="14.0" layoutY="14.0" prefHeight="199.0"-->
+                               <!--prefWidth="475.0" AnchorPane.leftAnchor="14.0"-->
+                               <!--AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">-->
+                        <!--<columns>-->
+                            <!--<TableColumn prefWidth="52.99999809265137" sortable="false" text="Select"/>-->
+                            <!--<TableColumn editable="false" prefWidth="83.00003814697266" sortable="false"-->
+                                         <!--text="ID"/>-->
+                            <!--<TableColumn editable="false" prefWidth="90.0" sortable="false"-->
+                                         <!--text="Make"/>-->
+                            <!--<TableColumn editable="false" prefWidth="87.0" sortable="false"-->
+                                         <!--text="Model"/>-->
+                            <!--<TableColumn editable="false" prefWidth="78.0" sortable="false"-->
+                                         <!--text="Year"/>-->
+                            <!--<TableColumn editable="false" prefWidth="86.99993896484375" sortable="false"-->
+                                         <!--text="Size"/>-->
+                        <!--</columns>-->
+                    <!--</TableView>-->
+                    <!--<Button fx:id="returnSelectedButton" layoutX="361.0" layoutY="223.0"-->
+                            <!--mnemonicParsing="false" onMouseClicked="#returnSelectedButtonClicked"-->
+                            <!--prefHeight="27.0" prefWidth="131.0" text="Return Selected"-->
+                            <!--AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="361.0"-->
+                            <!--AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="223.0"/>-->
+                <!--</AnchorPane>-->
+            <!--</Tab>-->
+            <!--<Tab fx:id="returnedCarsTab" closable="false" text="Returned Cars">-->
+                <!--<AnchorPane fx:id="returnedCarsAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0"-->
+                            <!--prefWidth="200.0">-->
+                    <!--<TableView fx:id="returnedCarTable" layoutX="14.0" layoutY="14.0" prefHeight="232.0"-->
+                               <!--prefWidth="476.0" AnchorPane.bottomAnchor="14.0"-->
+                               <!--AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0"-->
+                               <!--AnchorPane.topAnchor="14.0">-->
+                        <!--<columns>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false" text="ID"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Make"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Model"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Year"/>-->
+                            <!--<TableColumn editable="false" prefWidth="75.0" sortable="false"-->
+                                         <!--text="Rented"/>-->
+                            <!--<TableColumn editable="false" prefWidth="101.99996948242188"-->
+                                         <!--sortable="false" text="Returned"/>-->
+                        <!--</columns>-->
+                    <!--</TableView>-->
+                <!--</AnchorPane>-->
+            <!--</Tab>-->
+        <!--</TabPane>-->
+        <!--<Button fx:id="returnToCustomerSelectionButton" layoutX="379.0" layoutY="15.0" mnemonicParsing="false"-->
+                <!--onMouseClicked="#returnToCustomerSelectionButtonClicked" prefHeight="27.0" prefWidth="205.0"-->
+                <!--text="Return to Customer Selection"/>-->
+    <!--</AnchorPane>-->
+<!--</TitledPane>-->

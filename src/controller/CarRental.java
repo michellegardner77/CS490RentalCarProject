@@ -1,10 +1,9 @@
 package controller;
 
 import model.Car;
-import model.CarNotFoundException;
-import model.CarSpec;
 import model.Customer;
 import model.Rental;
+import utillity.CarNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +38,7 @@ public class CarRental {
         rentalListByCustomerMap.put(customer, new ArrayList<>());
     }
 
-    public void rentCarForCustomer(final Customer customer, final Car car) {
+    public void rentCarForCustomer(final Customer customer, final Car car) throws CarNotFoundException {
         if (!rentedSet.contains(car)) {
             rentalListByCustomerMap.get(customer).add(rentalMapByCar.get(car));
             rentedSet.add(car);
@@ -49,7 +48,7 @@ public class CarRental {
         }
     }
 
-    public void returnCarRentalForCustomer(final Customer customer, final Car car) {
+    public void returnCarRentalForCustomer(final Customer customer, final Car car) throws CarNotFoundException {
         if (rentedSet.contains(car)) {
             rentalListByCustomerMap.get(customer).remove(car);
             rentedSet.remove(car);
