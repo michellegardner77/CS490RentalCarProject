@@ -5,50 +5,49 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LandingSceneController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.LandingSceneController">
     <children>
         <TableView fx:id="customerTable" layoutX="35.0" layoutY="161.0" prefHeight="200.0" prefWidth="533.0">
             <columns>
-                <TableColumn fx:id="customerNameCol" prefWidth="182.0" text="Name" />
-                <TableColumn fx:id="customerTelephoneCol" prefWidth="161.0" text="Telephone" />
-                <TableColumn fx:id="customerAddressCol" prefWidth="189.0" text="Address" />
+                <TableColumn fx:id="customerNameCol" prefWidth="182.0" text="Name"/>
+                <TableColumn fx:id="customerTelephoneCol" prefWidth="161.0" text="Telephone"/>
+                <TableColumn fx:id="customerAddressCol" prefWidth="189.0" text="Address"/>
             </columns>
         </TableView>
-        <TextField fx:id="searchTextField" layoutX="35.0" layoutY="47.0" prefHeight="25.0" prefWidth="380.0" />
-        <Button fx:id="searchButton" layoutX="434.0" layoutY="47.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Search" />
-        <Button fx:id="rentCarButton" layoutX="35.0" layoutY="95.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Rent Car" />
-        <Button fx:id="rentedCarButton" layoutX="166.0" layoutY="95.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Rented Cars" />
+        <TextField fx:id="searchTextField" layoutX="35.0" layoutY="47.0" prefHeight="25.0" prefWidth="380.0"/>
+        <Button fx:id="searchButton" layoutX="434.0" layoutY="47.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0"
+                text="Search"/>
+        <Button fx:id="rentCarButton" layoutX="35.0" layoutY="95.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0"
+                text="Rent Car"/>
+        <Button fx:id="rentedCarButton" layoutX="166.0" layoutY="95.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0"
+                text="Rented Cars"/>
     </children>
 </AnchorPane>
 
-
-
-
-
         <!--<?xml version="1.0" encoding="UTF-8"?>-->
 
-<!--<?import javafx.scene.control.Button?>-->
-<!--<?import javafx.scene.control.TableColumn?>-->
-<!--<?import javafx.scene.control.TableView?>-->
-<!--<?import javafx.scene.control.TextField?>-->
-<!--<?import javafx.scene.control.TitledPane?>-->
-<!--<?import javafx.scene.layout.AnchorPane?>-->
+        <!--<?import javafx.scene.control.Button?>-->
+        <!--<?import javafx.scene.control.TableColumn?>-->
+        <!--<?import javafx.scene.control.TableView?>-->
+        <!--<?import javafx.scene.control.TextField?>-->
+        <!--<?import javafx.scene.control.TitledPane?>-->
+        <!--<?import javafx.scene.layout.AnchorPane?>-->
 
-<!--<TitledPane fx:id="landingFrame" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="402.0" prefWidth="601.0" text="Rental Car System" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">-->
-  <!--<content>-->
-    <!--<AnchorPane fx:id="landingAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="600.0" scaleShape="false">-->
-         <!--<children>-->
-            <!--<Button fx:id="customerSearchButton" layoutX="492.0" layoutY="32.0" mnemonicParsing="false" text="Search" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="460.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="30.0" />-->
-            <!--<Button fx:id="customerRentedCarsSearchButton" layoutX="163.0" layoutY="94.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="97.0" text="Rented Cars" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="80.0" />-->
-            <!--<Button fx:id="customerRentCarButton" layoutX="43.0" layoutY="94.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Rent Car" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="455.0" AnchorPane.topAnchor="80.0" />-->
-            <!--<TextField fx:id="customerSearchField" layoutX="62.0" layoutY="42.0" prefHeight="27.0" prefWidth="420.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="139.60000000000002" AnchorPane.topAnchor="30.0" />-->
-            <!--<TableView fx:id="customerInformationTable" layoutX="43.0" layoutY="143.0" prefHeight="200.0" prefWidth="511.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="132.60000000000002">-->
-              <!--<columns>-->
-                <!--<TableColumn prefWidth="75.0" text="C1" />-->
-                <!--<TableColumn prefWidth="75.0" text="C2" />-->
-              <!--</columns>-->
-            <!--</TableView>-->
-         <!--</children></AnchorPane>-->
-  <!--</content>-->
-<!--</TitledPane>-->
+        <!--<TitledPane fx:id="landingFrame" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="402.0" prefWidth="601.0" text="Rental Car System" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">-->
+        <!--<content>-->
+        <!--<AnchorPane fx:id="landingAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="600.0" scaleShape="false">-->
+        <!--<children>-->
+        <!--<Button fx:id="customerSearchButton" layoutX="492.0" layoutY="32.0" mnemonicParsing="false" text="Search" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="460.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="30.0" />-->
+        <!--<Button fx:id="customerRentedCarsSearchButton" layoutX="163.0" layoutY="94.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="97.0" text="Rented Cars" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="80.0" />-->
+        <!--<Button fx:id="customerRentCarButton" layoutX="43.0" layoutY="94.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Rent Car" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="455.0" AnchorPane.topAnchor="80.0" />-->
+        <!--<TextField fx:id="customerSearchField" layoutX="62.0" layoutY="42.0" prefHeight="27.0" prefWidth="420.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="139.60000000000002" AnchorPane.topAnchor="30.0" />-->
+        <!--<TableView fx:id="customerInformationTable" layoutX="43.0" layoutY="143.0" prefHeight="200.0" prefWidth="511.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="132.60000000000002">-->
+        <!--<columns>-->
+        <!--<TableColumn prefWidth="75.0" text="C1" />-->
+        <!--<TableColumn prefWidth="75.0" text="C2" />-->
+        <!--</columns>-->
+        <!--</TableView>-->
+        <!--</children></AnchorPane>-->
+        <!--</content>-->
+        <!--</TitledPane>-->

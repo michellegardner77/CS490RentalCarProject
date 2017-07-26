@@ -4,11 +4,11 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane prefHeight="309.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RentalDates">
-   <children>
-      <Label layoutX="119.0" layoutY="23.0" text="Return Date" />
-      <DatePicker fx:id="datePicker" layoutX="59.0" layoutY="63.0" />
-      <Button fx:id="okayDateButton" layoutX="110.0" layoutY="142.0" mnemonicParsing="false" text="Okay" />
-   </children>
+<AnchorPane prefHeight="309.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.RentalDates">
+    <children>
+        <Label layoutX="119.0" layoutY="23.0" text="Return Date"/>
+        <DatePicker fx:id="datePicker" layoutX="59.0" layoutY="63.0"/>
+        <Button fx:id="okayDateButton" layoutX="110.0" layoutY="142.0" mnemonicParsing="false" text="Okay"/>
+    </children>
 </AnchorPane>
