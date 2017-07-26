@@ -13,12 +13,13 @@ import java.sql.SQLException;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class RentalQueries {
     private DBManager dbManager;
     private String getCustomersQuery =
-            "SELECT customer_first_name, customer_last_name, customer_telephone, customer_address FROM rentaldb.customer";
+            "SELECT customer_name, customer_telephone, customer_address FROM rentaldb.customer";
 
     public RentalQueries() {
         this.dbManager = DBManager.getInstance();
@@ -29,12 +30,9 @@ public class RentalQueries {
         try {
             final ResultSet rs = dbManager.executeQuery(getCustomersQuery);
             while (rs.next()) {
-                final String customerFirst = rs.getString("customer_first_name");
-                final String customerLast = rs.getString("customer_last_name");
+                final String customerName = rs.getString("customer_name");
                 final String customerPhone = rs.getString("customer_telephone");
                 final String customerAddress = rs.getString("customer_address");
-
-                final String customerName = customerFirst + " " + customerLast;
 
                 final Customer customer = new Customer(customerName, customerPhone, customerAddress);
                 customerList.add(customer);
@@ -46,16 +44,18 @@ public class RentalQueries {
         return customerList;
     }
 
-    public List<Rental> getCarsToRent(String Status) {
+    public List<Rental> getRentedReturnedCars(String Status, String customerName) {
         PreparedStatement stmt;
         ResultSet rs;
 
         String query =
                 "SELECT rent.car_id, spec.make, spec.model, spec.year, spec.size, rent.rent_status, rent.rent_date, rent.return_date FROM"
-                        + " rental rent INNER JOIN carspec spec ON rent.car_id = spec.car_id WHERE rent.rental_status = ?";
+                        + " rentaldb.rental rent INNER JOIN rentaldb.carspec spec ON rent.car_id = spec.car_id "
+                        + " WHERE rent.rental_status = ? AND rent.customer_name =?";
         try {
             stmt = dbManager.getConnection().prepareStatement(query);
             stmt.setString(1, Status);
+            stmt.setString(2, customerName);
 
             rs = stmt.executeQuery();
         } catch (SQLException e) {
@@ -95,7 +95,8 @@ public class RentalQueries {
 
         String query =
                 "SELECT rent.car_id, spec.make, spec.model, spec.year, spec.size, rent.rent_status, rent.rent_date, rent.return_date FROM"
-                        + " rental rent INNER JOIN carspec spec ON rent.car_id = spec.car_id WHERE rent.rental_status = ?";
+                        + " rentaldb.rental rent INNER JOIN rentaldb.carspec spec ON rent.car_id = spec.car_id "
+                        + "WHERE rent.rental_status = ?";
         try {
             stmt = dbManager.getConnection().prepareStatement(query);
             stmt.setString(1, Status);
@@ -129,11 +130,6 @@ public class RentalQueries {
                     default:
                         carSize = CarSizeEnum.midsize;
                 }
-
-                //			String rentalStatus = carResultSet.getString("rental_status");
-                //			String rentedDate = carResultSet.getString("rent_date");
-                //			String returnDate = carResultSet.getString("return_date);
-
                 CarSpec carspec = new CarSpec(carID, carMake, carModel, Year.now(), carSize);
                 carSpecList.add(carspec);
             }
@@ -143,5 +139,38 @@ public class RentalQueries {
         }
         return carSpecList;
     }
+
+
+    //Updates db to "rent" or "return" a car changing status to loanedOut or returned
+    public void rentReturnSelectedCar(String carId, String Status, Date rentDate, Date returnDate){
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        String query =
+                "UPDATE rentaldb.rental SET rental_status = ?, rent_date = ?, return_date = ? WHERE car_id =? ";
+
+        try{
+            stmt = dbManager.getConnection().prepareStatement(query);
+            stmt.setString(1, Status);
+//            stmt.setString(2,rentDate);
+//            stmt.setString(3,returnDate);
+            stmt.setString(4, carId);
+
+            stmt.executeUpdate();
+            return;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+
+
+
+
 }
+
+
 

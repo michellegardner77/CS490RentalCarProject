@@ -70,7 +70,7 @@ public class LandingSceneController {
                     Stage stage = new Stage();
                     stage.initModality(Modality.APPLICATION_MODAL);
                     //stage.initStyle(StageStyle.UNDECORATED);
-                    stage.setTitle("ABC");
+                    stage.setTitle("TabWindow");
                     stage.setScene(new Scene(root1));
                     stage.show();
                 } catch (Exception e) {
@@ -85,6 +85,8 @@ public class LandingSceneController {
 
     }
 
+
+     // initializing , setting cols to these fields
     private void initializeCustomerTable(final ObservableList<Customer> list) {
         ObservableList<Customer> people = FXCollections.observableArrayList(list);
 

@@ -24,11 +24,10 @@ CREATE TABLE IF NOT EXISTS rentaldb.carspec
 );
 
 CREATE TABLE IF NOT EXISTS rentaldb.customer
-(customer_first_name varchar(200) not null,
- customer_last_name varchar(200) not null,
+(customer_name varchar(200) not null,
  customer_phone varchar(200) not null,
  customer_address varchar(200) not null,
-  constraint pk_customer_pkey PRIMARY KEY (customer_first_name, customer_last_name)
+  constraint pk_customer_pkey PRIMARY KEY (customer_name)
 );
 
 
@@ -36,11 +35,10 @@ CREATE TABLE IF NOT EXISTS rentaldb.rental
 (rent_date varchar(200) not null,
  return_date varchar(200) not null DEFAULT '0',
  rental_status varchar(200),
- customer_first_name varchar(200),
- customer_last_name varchar(200),
+ customer_name varchar(200),
  car_id varchar(200) not null,
-  constraint fk_rental_customer_first_name_fkey FOREIGN KEY(customer_first_name, customer_last_name)
-  REFERENCES rentaldb.customer(customer_first_name, customer_last_name) ON DELETE RESTRICT,
+  constraint fk_rental_customer_name_fkey FOREIGN KEY(customer_name)
+  REFERENCES rentaldb.customer(customer_name) ON DELETE RESTRICT,
   constraint fk_rental_car_fkey FOREIGN KEY(car_id) REFERENCES rentaldb.car(car_id) ON DELETE RESTRICT
 );
 
@@ -64,36 +62,30 @@ values((select car_id from rentaldb.car where car_id = '5321'),'Nissan','Altima'
   ((select car_id from rentaldb.car where car_id = '4444'),'Mercedes','G-Class','2000', NULL);
 
 /*Customer data population*/
-insert into rentaldb.customer(customer_first_name,customer_last_name, customer_phone, customer_address)
-values('Samir','James','816-878-1111','6012 NE Antioch Rd.'),
-  ('Kim','Sam','816-847-8888','7123 Main Street'),
-  ('Mehmet','Scholl','816-444-2387','12 Rockhill Rd.'),
-  ('John', 'Smith', '816-234-5678', '8679 Grand Blvd.');
+insert into rentaldb.customer(customer_name, customer_phone, customer_address)
+values('Samir James','816-878-1111','6012 NE Antioch Rd.'),
+  ('Kim Sam','816-847-8888','7123 Main Street'),
+  ('Mehmet Scholl','816-444-2387','12 Rockhill Rd.'),
+  ('John Smith', '816-234-5678', '8679 Grand Blvd.');
 
 /*Rental data population*/
-insert into rentaldb.rental(rent_date, return_date, rental_status, customer_first_name, customer_last_name, car_id)
+insert into rentaldb.rental(rent_date, return_date, rental_status, customer_name, car_id)
 values('1/12/12', '1/15/12', 'RETURNED',
-       (select customer_first_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
-       (select customer_last_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
+       (select customer_name from rentaldb.customer where customer_name = 'John Smith'),
        (select car_id from rentaldb.car where car_id = '5321')),
   ('1/12/12', '1/16/12', 'RETURNED',
-   (select customer_first_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
-   (select customer_last_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
+   (select customer_name from rentaldb.customer where customer_name = 'John Smith'),
    (select car_id from rentaldb.car where car_id ='4874')),
   ('1/1/10', '4/4/10', 'RETURNED',
-   (select customer_first_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
-   (select customer_last_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
+   (select customer_name from rentaldb.customer where customer_name = 'John Smith'),
    (select car_id from rentaldb.car where car_id ='4444')),
   ('5/6/12', '5/8/12', 'RETURNED',
-   (select customer_first_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
-   (select customer_last_name from rentaldb.customer where customer_first_name = 'John' and customer_last_name = 'Smith'),
+   (select customer_name from rentaldb.customer where customer_name = 'John Smith'),
    (select car_id from rentaldb.car where car_id ='1234')),
   ('3/22/17', '4/16/17', 'RETURNED',
-   (select customer_first_name from rentaldb.customer where customer_first_name = 'Samir' and customer_last_name = 'James'),
-   (select customer_last_name from rentaldb.customer where customer_first_name = 'Samir' and customer_last_name = 'James'),
+   (select customer_name from rentaldb.customer where customer_name = 'Samir James'),
    (select car_id from rentaldb.car where car_id ='4444')),
   ('5/18/17', '8/16/17', 'RENTED',
-   (select customer_first_name from rentaldb.customer where customer_first_name = 'Mehmet' and customer_last_name = 'Scholl'),
-   (select customer_last_name from rentaldb.customer where customer_first_name = 'Mehmet' and customer_last_name = 'Scholl'),
+   (select customer_name from rentaldb.customer where customer_name = 'Mehmet Scholl'),
    (select car_id from rentaldb.car where car_id ='4874'));
 
