@@ -87,6 +87,7 @@ public class CarRental {
         rentalListByCustomerMap.put(customer, new ArrayList<>());
     }
 
+
     public List<CarSpec> getAvailableCars(){
         final List<CarSpec> availableList = new ArrayList<>();
         availableSet.forEach(car -> {

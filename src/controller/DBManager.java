@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.Properties;
 
 public class DBManager {
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
-    private static final String SERVER_NAME = "servername";
-    private static final String PORT = "port";
-    private static final String SCHEMA = "schema";
+    private static final String USERNAME = "adv_user";
+    private static final String PASSWORD = "1234";
+    private static final String SERVER_NAME = "localhost";
+    private static final String PORT = "3306";
+    private static final String SCHEMA = "rentaldb";
     private static DBManager singletonInstance = null;
 
     public static DBManager getInstance() {
