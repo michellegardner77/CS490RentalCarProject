@@ -1,19 +1,21 @@
+package view;
+
+import controller.CarRental;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-
-import java.util.SimpleTimeZone;
 
 public class Main extends Application{
 
-
+    private static CarRental carRental = CarRental.getInstance();
     private static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view/landing.fxml"));
+
+        Parent root = FXMLLoader.load(getClass().getResource("landing.fxml"));
         primaryStage.setTitle("Rental Cars");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 600, 400));
@@ -26,3 +28,4 @@ public class Main extends Application{
     }
 
 }
+
