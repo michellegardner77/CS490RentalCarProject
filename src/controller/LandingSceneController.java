@@ -65,9 +65,8 @@ public class LandingSceneController {
             @Override
             public void handle(final MouseEvent event) {
                 try {
-                    URL url = new File("src/view/tabWindowFrame.fxml").toURL();
-                    FXMLLoader fxmlLoader = new FXMLLoader();
-                    Parent root1 = (Parent) fxmlLoader.load(url);
+//                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    Parent root1 = FXMLLoader.load(getClass().getResource("../view/tabWindowFrame.fxml"));
                     Stage stage = new Stage();
                     stage.initModality(Modality.APPLICATION_MODAL);
                     //stage.initStyle(StageStyle.UNDECORATED);

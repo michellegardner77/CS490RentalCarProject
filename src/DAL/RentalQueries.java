@@ -1,6 +1,6 @@
 package DAL;
 
-import controller.DBManager;
+import core.DBManager;
 import model.CarSizeEnum;
 import model.CarSpec;
 import model.Customer;

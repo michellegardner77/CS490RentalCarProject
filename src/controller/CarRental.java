@@ -6,6 +6,7 @@ import model.CarSpec;
 import model.Customer;
 import model.Rental;
 import utillity.CarNotFoundException;
+import core.DBManager;
 
 import java.time.Year;
 import java.util.ArrayList;
