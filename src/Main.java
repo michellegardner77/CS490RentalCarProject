@@ -1,4 +1,5 @@
 import controller.CarRental;
+import controller.LandingSceneController;
 import core.DBManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,17 +10,25 @@ import javafx.stage.Stage;
 public class Main extends Application{
 
     private static CarRental carRental = CarRental.getInstance();
-    private static Stage primaryStage;
+    LandingSceneController landingcontroller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         DBManager dbManager = new DBManager();
 
-        Parent root = FXMLLoader.load(getClass().getResource("view/landing.fxml"));
+        FXMLLoader landingSceneFXMLLoader = new FXMLLoader(getClass().getResource("view/landing.fxml"));
+        Parent root = landingSceneFXMLLoader.load();
         primaryStage.setTitle("Rental Cars");
         primaryStage.setResizable(false);
-        primaryStage.setScene(new Scene(root, 600, 400));
+        Scene parentScene = new Scene(root, 600, 400);
+        primaryStage.setScene(parentScene);
+
+        LandingSceneController landingSceneController = landingSceneFXMLLoader.getController();
+        // pass primary stage reference to LandingSceneController
+        landingSceneController.setStage(primaryStage);
+        landingSceneController.setParentScene(parentScene);
+
         primaryStage.show();
     }
 

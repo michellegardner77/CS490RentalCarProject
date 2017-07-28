@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS rentaldb.customer
 
 
 CREATE TABLE IF NOT EXISTS rentaldb.rental
-(rent_date varchar(200) not null,
- return_date varchar(200) not null DEFAULT '0',
+(rent_date DATE not null,
+ return_date DATE not null DEFAULT '0',
  rental_status varchar(200),
  customer_name varchar(200),
  car_id varchar(200) not null,

@@ -1,38 +1,39 @@
 package model;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class Rental implements Searchable {
-    private Calendar rentDate;
-    private Calendar returnDate;
+    private Date rentDate;
+    private Date returnDate;
     private RentalStatusEnum status;
     private String carId;
 
     public Rental() {
     }
 
-    public Rental(final Calendar rentDate, final Calendar returnDate, final RentalStatusEnum status, final String carId) {
+    public Rental(final Date rentDate, final Date returnDate, final RentalStatusEnum status, final String carId) {
         this.rentDate = rentDate;
         this.returnDate = returnDate;
         this.status = status;
         this.carId = carId;
     }
 
-    public Calendar getRentDate() {
+    public Date getRentDate() {
         return rentDate;
     }
 
-    public Rental setRentDate(final Calendar rentDate) {
+    public Rental setRentDate(final Date rentDate) {
         this.rentDate = rentDate;
         return this;
     }
 
-    public Calendar getReturnDate() {
+    public Date getReturnDate() {
         return returnDate;
     }
 
-    public Rental setReturnDate(final Calendar returnDate) {
+    public Rental setReturnDate(final Date returnDate) {
         this.returnDate = returnDate;
         return this;
     }
