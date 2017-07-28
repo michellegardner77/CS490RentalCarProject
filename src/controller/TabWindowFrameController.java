@@ -6,12 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.CarSpec;
 import model.Customer;
@@ -63,6 +58,8 @@ public class TabWindowFrameController {
     private URL location;
     @FXML // fx:id="selectedCustomerLabel"
     private Label selectedCustomerLabel; // Value injected by FXMLLoader
+    @FXML // fx:id="parentTabPane"
+    private TabPane parentTabPane;
     @FXML // fx:id="findCarTabPane"
     private Tab findCarTabPane; // Value injected by FXMLLoader
     @FXML // fx:id="findCarTable"
@@ -109,6 +106,8 @@ public class TabWindowFrameController {
     void initialize() {
         assert selectedCustomerLabel != null :
                 "fx:id=\"selectedCustomerLabel\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
+        assert parentTabPane != null : "fx:id=\"parentTabPane\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
+
         assert findCarTabPane != null : "fx:id=\"findCarTabPane\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
         assert findCarTable != null : "fx:id=\"findCarTable\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
         assert findCarSearchButton != null : "fx:id=\"findCarSearchButton\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
@@ -142,11 +141,19 @@ public class TabWindowFrameController {
             selectedCustomerLabel.setText(currentCustomer.getName() + "'s Account");
         }
 
+//        switch (carRental.getCurrentTab()) {
+//            case find_car:
+//
+//        }
+
         ObservableList<CarSpec> availableCars = FXCollections.observableArrayList(carRental.getAvailableCars());
         initializeCarSpecTable(availableCars, findCarTable);
 
         ObservableList<Rental> rentedCars = FXCollections.observableArrayList(carRental.getOutstandingRentalsForCustomer(currentCustomer));
         initializeRentalTable(rentedCars, rentedCarsTable);
+
+        ObservableList<Rental> returnedCars = FXCollections.observableArrayList(carRental.getPreviousRentalsForCustomer(currentCustomer));
+        initializeRentalTable(returnedCars, returnedCarsTable);
     }
 
     private void initializeCarSpecTable(final ObservableList<CarSpec> list, final TableView<CarSpec> table) {

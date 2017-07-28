@@ -15,17 +15,24 @@ import java.util.HashSet;
 import java.util.List;
 
 public class CarRental {
+    public enum SelectedTab {
+        find_car, outstanding, returned
+    }
+
+
     private DBManager dbManager;
     private static CarRental singletonInstance = null;
     private final ArrayList<Customer> customerList = new ArrayList<>();
     private final HashMap<Customer, ArrayList<Rental>> rentalListByCustomerMap = new HashMap<>();
+    private final HashMap<Customer, ArrayList<Rental>> previousRentalListByCustomerMap = new HashMap<>();
     private final HashMap<Car, Rental> rentalMapByCar = new HashMap<>();
     private final HashMap<Car, CarSpec> carSpecByCar = new HashMap<>();
     private final List<Car> carList = new ArrayList();
     HashSet<Car> rentedSet = new HashSet<>();
     HashSet<Car> availableSet = new HashSet<>();
 
-    private Customer currentCustomer = null;
+    private static Customer currentCustomer = null;
+    private static SelectedTab currentTab = null;
 
     // When the CarRental controller is created, we are pre-filling the list with hardcoded item.
     private CarRental() {
@@ -35,14 +42,14 @@ public class CarRental {
             customerList.add(new Customer("Jack", "816-444-4444", "131 NW Nibbles Lane"));
         }
 
-        if (carList.isEmpty()){
+        if (carList.isEmpty()) {
             carList.add(new Car("sheila"));
             carList.add(new Car("dingo"));
             carList.add(new Car("cassowary"));
 
-            carSpecByCar.put(carList.get(0),new CarSpec("sheila", "subaru", "impresa", Year.now(), CarSizeEnum.midsize));
-            carSpecByCar.put(carList.get(1),new CarSpec("dingo", "ford", "focus", Year.now(), CarSizeEnum.midsize));
-            carSpecByCar.put(carList.get(2),new CarSpec("cassowary", "ram", "truck", Year.now(), CarSizeEnum.large));
+            carSpecByCar.put(carList.get(0), new CarSpec("sheila", "subaru", "impresa", Year.now(), CarSizeEnum.midsize));
+            carSpecByCar.put(carList.get(1), new CarSpec("dingo", "ford", "focus", Year.now(), CarSizeEnum.midsize));
+            carSpecByCar.put(carList.get(2), new CarSpec("cassowary", "ram", "truck", Year.now(), CarSizeEnum.large));
 
             availableSet.addAll(carList);
         }
@@ -70,7 +77,7 @@ public class CarRental {
     }
 
     public void setCurrentCustomer(Customer customer) {
-        if (customerList.contains(customer)){
+        if (customerList.contains(customer)) {
             currentCustomer = customer;
             return;
         }
@@ -85,7 +92,7 @@ public class CarRental {
     }
 
 
-    public List<CarSpec> getAvailableCars(){
+    public List<CarSpec> getAvailableCars() {
         final List<CarSpec> availableList = new ArrayList<>();
         availableSet.forEach(car -> {
             availableList.add(carSpecByCar.get(car));
@@ -95,7 +102,9 @@ public class CarRental {
 
     public void rentCarForCustomer(final Customer customer, final Car car) throws CarNotFoundException {
         if (!rentedSet.contains(car)) {
+            rentalListByCustomerMap.putIfAbsent(customer, new ArrayList<>());
             rentalListByCustomerMap.get(customer).add(rentalMapByCar.get(car));
+
             rentedSet.add(car);
             availableSet.remove(car);
         } else {
@@ -108,6 +117,8 @@ public class CarRental {
             rentalListByCustomerMap.get(customer).remove(car);
             rentedSet.remove(car);
             availableSet.add(car);
+            previousRentalListByCustomerMap.putIfAbsent(customer, new ArrayList<>());
+            previousRentalListByCustomerMap.get(customer).add(rentalMapByCar.get(car));
         } else {
             throw new CarNotFoundException("Car not rented out!", car.getId());
         }
@@ -116,7 +127,9 @@ public class CarRental {
     public ArrayList<Rental> getOutstandingRentalsForCustomer(final Customer customer) {
         ArrayList<Rental> rentals = new ArrayList<>();
         rentalListByCustomerMap.get(customer).forEach(car -> {
-            rentals.add(rentalMapByCar.get(car));
+            if (car != null) {
+                rentals.add(rentalMapByCar.get(car));
+            }
         });
 
         return rentals;
@@ -142,5 +155,17 @@ public class CarRental {
             }
         });
         return matchingRentals;
+    }
+
+    public ArrayList<Rental> getPreviousRentalsForCustomer(final Customer customer) {
+        return previousRentalListByCustomerMap.get(customer);
+    }
+
+    public SelectedTab getCurrentTab() {
+        return currentTab;
+    }
+
+    public void setCurrentTab(SelectedTab currentTab) {
+        CarRental.currentTab = currentTab;
     }
 }

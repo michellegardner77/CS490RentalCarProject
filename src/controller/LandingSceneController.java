@@ -66,18 +66,34 @@ public class LandingSceneController {
         ObservableList<Customer> customerList = FXCollections.observableArrayList(carRental.getAllCustomers());
         initializeCustomerTable(customerList);
 
-        searchTextField.setOnKeyTyped(event -> {
+        searchButton.setOnMouseClicked(event -> {
             final ArrayList<Customer> customers = carRental.getCustomerContainingSubstring(searchTextField.getText());
             customerTable.setItems(FXCollections.observableArrayList(customers));
         });
 
-        searchButton.setOnMouseClicked(event -> {
+        rentCarButton.setOnMouseClicked(event -> {
             Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
             if (selectedCustomer == null) {
                 System.out.println("No customer selected");
             } else {
                 try {
                     carRental.setCurrentCustomer(selectedCustomer);
+                    carRental.setCurrentTab(CarRental.SelectedTab.find_car);
+                    openTabPaneWindow(event);
+                } catch (Exception e) {
+                    System.out.println("Bad customer selected, controller threw error");
+                }
+            }
+        });
+
+        rentedCarButton.setOnMouseClicked(event -> {
+            Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+            if (selectedCustomer == null) {
+                System.out.println("No customer selected");
+            } else {
+                try {
+                    carRental.setCurrentCustomer(selectedCustomer);
+                    carRental.setCurrentTab(CarRental.SelectedTab.outstanding);
                     openTabPaneWindow(event);
                 } catch (Exception e) {
                     System.out.println("Bad customer selected, controller threw error");
@@ -87,7 +103,7 @@ public class LandingSceneController {
     }
 
 
-    // initializing , setting cols to these fields
+        // initializing , setting cols to these fields
 
     private void initializeCustomerTable(final ObservableList<Customer> list) {
         TableColumn<Customer, String> nameCol = new TableColumn<Customer, String>("Name");
