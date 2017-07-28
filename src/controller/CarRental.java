@@ -66,10 +66,6 @@ public class CarRental {
     }
 
     public Customer getCurrentCustomer() {
-        if (currentCustomer == null){
-            throw new RuntimeException();
-        }
-
         return currentCustomer;
     }
 

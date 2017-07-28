@@ -1,6 +1,7 @@
 package controller;
 
 import DAL.RentalQueries;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.CarSpec;
+import model.Customer;
 import model.Rental;
 
 import java.net.URL;
@@ -24,12 +26,12 @@ public class TabWindowFrameController {
     private CarRental carRental = CarRental.getInstance();
     private RentalQueries rentalQueries = new RentalQueries();
 
-    public TableColumn<Object,Object> carSpecIDCol;
-    public TableColumn<Object,Object> carSpecMakeCol;
-    public TableColumn<Object,Object> carSpecModelCol;
-    public TableColumn<Object,Object> carSpecYearCol;
-    public TableColumn<Object,Object> carSpecSizeCol;
-    public TableColumn<Object,Object> carSpecSelectCol;
+    public TableColumn<Object, Object> carSpecIDCol;
+    public TableColumn<Object, Object> carSpecMakeCol;
+    public TableColumn<Object, Object> carSpecModelCol;
+    public TableColumn<Object, Object> carSpecYearCol;
+    public TableColumn<Object, Object> carSpecSizeCol;
+    public TableColumn<Object, Object> carSpecSelectCol;
 
 //    public TableColumn<Object,Object> rentedSelectCol;
 //    public TableColumn<Object,Object> rentedMakeCol;
@@ -49,7 +51,7 @@ public class TabWindowFrameController {
 //    public TableView<Rental> rentedCarsTable;
 //    public TableView<Rental> returnedCarsTable;
 
-
+    private Customer currentCustomer;
     private ObservableList<CarSpec> findCarObservableList;
     private ObservableList<Rental> rentCarsObservableList;
     private ObservableList<Rental> returnedCarsObservableList;
@@ -59,8 +61,8 @@ public class TabWindowFrameController {
     private ResourceBundle resources;
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
-    @FXML // fx:id="selectedCustomer0Label"
-    private Label selectedCustomer0Label; // Value injected by FXMLLoader
+    @FXML // fx:id="selectedCustomerLabel"
+    private Label selectedCustomerLabel; // Value injected by FXMLLoader
     @FXML // fx:id="findCarTabPane"
     private Tab findCarTabPane; // Value injected by FXMLLoader
     @FXML // fx:id="findCarTable"
@@ -72,7 +74,7 @@ public class TabWindowFrameController {
     @FXML // fx:id="rentedCarsTabPane"
     private Tab rentedCarsTabPane; // Value injected by FXMLLoader
     @FXML // fx:id="rentedCarsTable"
-    private TableView<?> rentedCarsTable; // Value injected by FXMLLoader
+    private TableView<Rental> rentedCarsTable; // Value injected by FXMLLoader
     @FXML // fx:id="rentedSelectCol"
     private TableColumn<?, ?> rentedSelectCol; // Value injected by FXMLLoader
     @FXML // fx:id="rentedMakeCol"
@@ -88,7 +90,7 @@ public class TabWindowFrameController {
     @FXML // fx:id="returnedCarsTabPane"
     private Tab returnedCarsTabPane; // Value injected by FXMLLoader
     @FXML // fx:id="returnedCarsTable"
-    private TableView<?> returnedCarsTable; // Value injected by FXMLLoader
+    private TableView<Rental> returnedCarsTable; // Value injected by FXMLLoader
     @FXML // fx:id="returnedCarsIDCol"
     private TableColumn<?, ?> returnedCarsIDCol; // Value injected by FXMLLoader
     @FXML // fx:id="returnedCarsMakeCol"
@@ -105,8 +107,8 @@ public class TabWindowFrameController {
     @FXML
         // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert selectedCustomer0Label != null :
-                "fx:id=\"selectedCustomer0Label\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
+        assert selectedCustomerLabel != null :
+                "fx:id=\"selectedCustomerLabel\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
         assert findCarTabPane != null : "fx:id=\"findCarTabPane\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
         assert findCarTable != null : "fx:id=\"findCarTable\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
         assert findCarSearchButton != null : "fx:id=\"findCarSearchButton\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
@@ -133,39 +135,62 @@ public class TabWindowFrameController {
         assert returnedCarsReturnedDateCol != null :
                 "fx:id=\"returnedCarsReturnedDateCol\" was not injected: check your FXML file 'tabWindowFrame.fxml'.";
 
-        ObservableList<CarSpec> carSpecList = FXCollections.observableArrayList(carRental.getAvailableCars());
-        initializeFindCarsTable(carSpecList);
+        currentCustomer = carRental.getCurrentCustomer();
+        if (currentCustomer == null) {
+            throw new RuntimeException();
+        } else {
+            selectedCustomerLabel.setText(currentCustomer.getName() + "'s Account");
+        }
+
+        ObservableList<CarSpec> availableCars = FXCollections.observableArrayList(carRental.getAvailableCars());
+        initializeCarSpecTable(availableCars, findCarTable);
+
+        ObservableList<Rental> rentedCars = FXCollections.observableArrayList(carRental.getOutstandingRentalsForCustomer(currentCustomer));
+        initializeRentalTable(rentedCars, rentedCarsTable);
     }
 
-    private void initializeFindCarsTable(final ObservableList<CarSpec> list) {
-        ObservableList<CarSpec> cars = FXCollections.observableArrayList(list);
-
+    private void initializeCarSpecTable(final ObservableList<CarSpec> list, final TableView<CarSpec> table) {
         TableColumn<CarSpec, String> idCol = new TableColumn<CarSpec, String>("CarID");
         idCol.setCellValueFactory(
                 new PropertyValueFactory<CarSpec, String>("carId")
         );
 
-        TableColumn<CarSpec, String> makeCol = new  TableColumn<CarSpec, String>("Make");
+        TableColumn<CarSpec, String> makeCol = new TableColumn<CarSpec, String>("Make");
         makeCol.setCellValueFactory(
                 new PropertyValueFactory<CarSpec, String>("make"));
 
-        TableColumn<CarSpec, String> modelCol = new  TableColumn<CarSpec, String>("Model");
+        TableColumn<CarSpec, String> modelCol = new TableColumn<CarSpec, String>("Model");
         modelCol.setCellValueFactory(
                 new PropertyValueFactory<CarSpec, String>("model")
         );
 
-        TableColumn<CarSpec, String> yearCol = new  TableColumn<CarSpec, String>("Year");
+        TableColumn<CarSpec, String> yearCol = new TableColumn<CarSpec, String>("Year");
         yearCol.setCellValueFactory(
                 new PropertyValueFactory<CarSpec, String>("year")
         );
 
-        TableColumn<CarSpec, String> sizeCol = new  TableColumn<CarSpec, String>("Size");
+        TableColumn<CarSpec, String> sizeCol = new TableColumn<CarSpec, String>("Size");
         sizeCol.setCellValueFactory(
                 new PropertyValueFactory<CarSpec, String>("size")
         );
 
-        findCarTable.getColumns().setAll(idCol, makeCol, modelCol, yearCol, sizeCol);
-        findCarTable.setItems(list);
+        table.getColumns().setAll(idCol, makeCol, modelCol, yearCol, sizeCol);
+        table.setItems(list);
+    }
+
+    private void initializeRentalTable(final ObservableList<Rental> list, final TableView<Rental> table) {
+        TableColumn<Rental, String> idCol = new TableColumn<Rental, String>("CarID");
+        idCol.setCellValueFactory(
+                new PropertyValueFactory<Rental, String>("carId")
+        );
+
+        TableColumn<Rental, String> rentDateCol = new TableColumn<Rental, String>("Rent Date");
+        rentDateCol.setCellValueFactory(
+                new PropertyValueFactory<Rental, String>("rentDate"));
+
+
+        table.getColumns().setAll(idCol, rentDateCol);
+        table.setItems(list);
     }
 //
 //    public void findCarTabTable() {

@@ -11,8 +11,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.TabWindowFrameController">
     <children>
-        <Label fx:id="selectedCustomer0Label" layoutX="37.0" layoutY="43.0" prefHeight="17.0" prefWidth="45.0" text="name"/>
-        <Label layoutX="103.0" layoutY="43.0" text="'s Account"/>
+        <Label fx:id="selectedCustomerLabel" layoutX="37.0" layoutY="43.0" prefHeight="17.0" prefWidth="300.0" text="name"/>
         <TabPane layoutX="31.0" layoutY="74.0" prefHeight="307.0" prefWidth="536.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab fx:id="findCarTabPane" text="Find Car">
