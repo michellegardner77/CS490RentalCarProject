@@ -3,6 +3,7 @@ package controller;
 import DAL.RentalQueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,13 +20,14 @@ import model.Customer;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LandingSceneController {
     CarRental carRental = CarRental.getInstance();
     RentalQueries rentalQueries = new RentalQueries();
 
-    ArrayList<Customer> customerList = null;
+    List<Customer> customerList = null;
     ObservableList<Customer> customerObservableList = null;
 
 
@@ -54,9 +56,10 @@ public class LandingSceneController {
     private Stage stage;
     // reference to current parentScene
     private Scene parentScene;
+    private Customer selectedCustomer;
 
+    // This method is called by the FXMLLoader when initialization is complete
     @FXML
-        // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
 //        assert customerTable != null : "fx:id=\"customerTable\" was not injected: check your FXML file 'landing.fxml'.";
 //        assert customerNameCol != null : "fx:id=\"customerNameCol\" was not injected: check your FXML file 'landing.fxml'.";
@@ -72,22 +75,13 @@ public class LandingSceneController {
         //initializeCustomerTable(customerList);
 
         searchTextField.setOnKeyTyped(event -> {
-            final ArrayList<Customer> customers = carRental.getCustomerContainingSubstring(searchTextField.getText());
-            customerTable.setItems(FXCollections.observableArrayList(customers));
+            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()){
+                searchCustomers();
+            }
         });
 
         searchButton.setOnMouseClicked(event -> {
-//            Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
-//            if (selectedCustomer == null) {
-//                System.out.println("No customer selected");
-//            } else {
-//                try {
-//                    carRental.setCurrentCustomer(selectedCustomer);
-//                    openTabPaneWindow(event);
-//                } catch (Exception e) {
-//                    System.out.println("Bad customer selected, controller threw error");
-//                }
-//            }
+            searchCustomers();
         });
 
         rentCarButton.setOnMouseClicked(event -> {
@@ -96,41 +90,34 @@ public class LandingSceneController {
                 System.out.println("No customer selected");
             } else {
                 try {
-                    carRental.setCurrentCustomer(selectedCustomer);
-                    openTabPaneWindow(event);
+//                    carRental.setCurrentCustomer(selectedCustomer);
+                    openTabPaneWindowFindCarsTab(event);
                 } catch (Exception e) {
-                    System.out.println("Bad customer selected, controller threw error");
+                    System.err.println("Bad customer selected, controller threw error");
                 }
             }
         });
 
         rentedCarButton.setOnMouseClicked(event -> {
-            openTabPaneWindow(event);
+            Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+            if (selectedCustomer == null) {
+                System.out.println("No customer selected");
+            } else {
+                try {
+//                    carRental.setCurrentCustomer(selectedCustomer);
+                    openTabPaneWindowRentedCarsTab(event);
+                } catch (Exception e) {
+                    System.err.println("Bad customer selected, controller threw error");
+                }
+            }
+        });
+
+        customerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                this.selectedCustomer = newSelection;
+            }
         });
     }
-
-//
-//    // initializing , setting cols to these fields
-//
-//    private void initializeCustomerTable(final ObservableList<Customer> list) {
-//        TableColumn<Customer, String> nameCol = new TableColumn<Customer, String>("Name");
-//        nameCol.setCellValueFactory(
-//                new PropertyValueFactory<Customer, String>("name")
-//        );
-//
-//        TableColumn<Customer, String> phoneCol = new TableColumn<Customer, String>("Phone Number");
-//        phoneCol.setCellValueFactory(
-//                new PropertyValueFactory<Customer, String>("phone"));
-//
-//        TableColumn<Customer, String> addressCol = new TableColumn<Customer, String>("Address");
-//        addressCol.setCellValueFactory(
-//                new PropertyValueFactory<Customer, String>("address")
-//        );
-//
-//        customerTable.getColumns().setAll(nameCol, phoneCol, addressCol);
-//        customerTable.setItems(list);
-//
-//       }
 
      public void loadCustomerTable(){
         // Get list of customers from database
@@ -151,9 +138,7 @@ public class LandingSceneController {
      }
 
 
-
-
-    private void openTabPaneWindow(final Event event) {
+    private void openTabPaneWindowFindCarsTab(final Event event) {
         try {
             // Load FXML file to FXMLoader
             FXMLLoader tabWindowFrameSceneLoader = new FXMLLoader(getClass().getResource("../view/tabWindowFrame.fxml"));
@@ -170,12 +155,60 @@ public class LandingSceneController {
             tabWindowFrameController.setPreviousScene(parentScene);
             tabWindowFrameController.setCurrentScene(tabWindowScene);
 
-            // TODO: can make this dynamic so this isn't the tab always selected
-            tabWindowFrameController.selecRentedCarsTab();
+            tabWindowFrameController.selectFindCarTab();
+            tabWindowFrameController.loadFindCarTabTable();
+            tabWindowFrameController.setCurrentCustomer(selectedCustomer);
+            tabWindowFrameController.setSelectedCustomerLabel();
 
             stage.setScene(tabWindowScene);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void openTabPaneWindowRentedCarsTab(final Event event) {
+        try {
+            // Load FXML file to FXMLoader
+        FXMLLoader tabWindowFrameSceneLoader = new FXMLLoader(getClass().getResource("../view/tabWindowFrame.fxml"));
+
+        // Create initial pane (anchorPane) for parentScene object.
+        AnchorPane tabWindowsAnchorPane = tabWindowFrameSceneLoader.load();
+
+        // Create parentScene
+        Scene tabWindowScene = new Scene(tabWindowsAnchorPane);
+
+        // Get the instance of the controller
+        TabWindowFrameController tabWindowFrameController = tabWindowFrameSceneLoader.getController();
+        tabWindowFrameController.setStage(stage);
+        tabWindowFrameController.setPreviousScene(parentScene);
+        tabWindowFrameController.setCurrentScene(tabWindowScene);
+
+        tabWindowFrameController.selectRentedCarsTab();
+        tabWindowFrameController.setCurrentCustomer(selectedCustomer);
+        tabWindowFrameController.setSelectedCustomerLabel();
+
+        stage.setScene(tabWindowScene);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
+
+    @FXML
+    public void onEnter(ActionEvent ae){
+        searchCustomers();
+    }
+
+    private void searchCustomers(){
+        if (searchTextField.getText() == null) {
+            System.out.println("No search qualification.");
+        } else {
+            try {
+                List<Customer> searchedCustomerList = rentalQueries.searchCustomers(searchTextField.getText());
+                customerTable.setItems(FXCollections.observableArrayList(searchedCustomerList));
+
+            } catch (Exception e) {
+                System.err.println("Search Failed");
+            }
         }
     }
 
