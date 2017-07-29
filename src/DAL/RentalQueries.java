@@ -1,56 +1,89 @@
 package DAL;
 
 import core.DBManager;
-import model.CarSizeEnum;
-import model.CarSpec;
-import model.Customer;
-import model.Rental;
-import model.RentalStatusEnum;
+import model.*;
 
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Year;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class RentalQueries {
     private DBManager dbManager;
-    private String getCustomersQuery =
-            "SELECT customer_name, customer_phone, customer_address FROM rentaldb.customer";
 
     public RentalQueries() {
         this.dbManager = DBManager.getInstance();
     }
 
-    public ArrayList<Customer> getAllCustomers() {
+    public List<Customer> getAllCustomers() {
+
+        String getCustomersQuery =
+                "SELECT customer_name, customer_phone, customer_address FROM rentaldb.customer";
+
         final ArrayList customerList = new ArrayList();
+
+        ResultSet rs;
         try {
-            final ResultSet rs = dbManager.executeQuery(getCustomersQuery);
-            while (rs.next()) {
-                final String customerName = rs.getString("customer_name");
-                final String customerPhone = rs.getString("customer_phone");
-                final String customerAddress = rs.getString("customer_address");
+            rs = dbManager.executeQuery(getCustomersQuery);
+        } catch (final SQLException e) {
+            System.err.println(e.getMessage());
+            return customerList;
+        }
+        return resultSetToCustomerList(rs);
+    }
+
+    public List<Customer> searchCustomers(String searchString) {
+
+        String getCustomersQuery =
+                "SELECT customer_name, customer_phone, customer_address FROM rentaldb.customer " +
+                        "where customer_name like '%" + searchString + "%' " +
+                        "or customer_phone like '%" + searchString + "%' " +
+                        "or customer_address like '%" + searchString + "%' ";
+
+        final ArrayList customerList = new ArrayList();
+
+        PreparedStatement stmt;
+        ResultSet rs;
+        try {
+            stmt = dbManager.getConnection().prepareStatement(getCustomersQuery);
+            rs = stmt.executeQuery();
+        } catch (final SQLException e) {
+            System.err.println(e.getMessage());
+            return customerList;
+        }
+        return resultSetToCustomerList(rs);
+    }
+
+    private List<Customer> resultSetToCustomerList(ResultSet customerResultsList) {
+        List<Customer> customerList = new ArrayList<>();
+
+        try {
+            while (customerResultsList.next()) {
+                final String customerName = customerResultsList.getString("customer_name");
+                final String customerPhone = customerResultsList.getString("customer_phone");
+                final String customerAddress = customerResultsList.getString("customer_address");
 
                 final Customer customer = new Customer(customerName, customerPhone, customerAddress);
                 customerList.add(customer);
             }
-        } catch (final SQLException e) {
-            System.err.println(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
             return customerList;
         }
         return customerList;
     }
 
-    public List<Rental> getRentedReturnedCars(String Status, String customerName) {
+
+
+    public List<CarSpecRentalJoin> getRentedReturnedCars(String Status, String customerName) {
         PreparedStatement stmt;
         ResultSet rs;
 
         String query =
-                "SELECT rent.car_id, spec.make, spec.model, spec.year, spec.size, rent.rent_status, rent.rent_date, rent.return_date FROM"
+                "SELECT DISTINCT rent.car_id, spec.make, spec.model, spec.year, spec.size, rent.rent_status, rent.rent_date, rent.return_date FROM"
                         + " rentaldb.rental rent INNER JOIN rentaldb.carspec spec ON rent.car_id = spec.car_id "
                         + " WHERE rent.rental_status = ? AND rent.customer_name =?";
         try {
@@ -67,12 +100,14 @@ public class RentalQueries {
         return resultSetToRentalList(rs);
     }
 
-    private List<Rental> resultSetToRentalList(ResultSet carResultSet) {
-        List<Rental> rentalList = new ArrayList<>();
+    private List<CarSpecRentalJoin> resultSetToRentalList(ResultSet carResultSet) {
+        List<CarSpecRentalJoin> rentalList = new ArrayList<>();
 
         try {
             while (carResultSet.next()) {
                 String carID = carResultSet.getString("car_id");
+                String make = carResultSet.getString("make");
+                String model = carResultSet.getString("model");
 
                 RentalStatusEnum rentalStatus =
                         carResultSet.getString("rental_status").equals("returned") ? RentalStatusEnum.returned : RentalStatusEnum.loanedOut;
@@ -80,8 +115,8 @@ public class RentalQueries {
                 Date rentedDate = carResultSet.getDate("rent_date");
                 Date returnDate = carResultSet.getDate("return_date");
 
-                Rental rental = new Rental(rentedDate, returnDate, rentalStatus, carID);
-                rentalList.add(rental);
+                CarSpecRentalJoin carSpecRentalJoin= new CarSpecRentalJoin(carID, make, model, rentedDate, returnDate);
+                rentalList.add(carSpecRentalJoin);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +130,7 @@ public class RentalQueries {
         ResultSet rs;
 
         String query =
-                "SELECT rent.car_id, spec.make, spec.model, spec.year, spec.size, rent.rent_status, rent.rent_date, rent.return_date FROM"
+                "SELECT DISTINCT rent.car_id, spec.make, spec.model, spec.year, spec.size, rent.rental_status, rent.rent_date, rent.return_date FROM"
                         + " rentaldb.rental rent INNER JOIN rentaldb.carspec spec ON rent.car_id = spec.car_id "
                         + "WHERE rent.rental_status = ?";
         try {
@@ -108,10 +143,36 @@ public class RentalQueries {
             return null;
         }
 
-        return resultSetToCarSpeclList(rs);
+        return resultSetToCarSpecList(rs);
     }
 
-    private List<CarSpec> resultSetToCarSpeclList(ResultSet carResultSet) {
+    public List<CarSpec> searchCarSpecs(String Status, String searchString) {
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        String query =
+                "SELECT DISTINCT rent.car_id, spec.make, spec.model, spec.year, spec.size FROM"
+                        + " rentaldb.rental rent INNER JOIN rentaldb.carspec spec ON rent.car_id = spec.car_id "
+                        + "WHERE rent.rental_status = ? AND "
+                        + "(rent.car_id LIKE '%"+searchString+"%' "
+                        + "OR spec.make LIKE '%"+searchString+"%' "
+                        + "OR spec.model LIKE '%"+searchString+"%' "
+                        + "OR spec.year LIKE '%"+searchString+"%' "
+                        + "OR spec.size LIKE '%"+searchString+"%')";
+        try {
+            stmt = dbManager.getConnection().prepareStatement(query);
+            stmt.setString(1, Status);
+
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+
+        return resultSetToCarSpecList(rs);
+    }
+
+    private List<CarSpec> resultSetToCarSpecList(ResultSet carResultSet) {
         List<CarSpec> carSpecList = new ArrayList<>();
 
         try {
@@ -121,15 +182,22 @@ public class RentalQueries {
                 String carModel = carResultSet.getString("model");
                 String carYear = carResultSet.getString("year");
                 CarSizeEnum carSize;
-                switch (carResultSet.getString("size")) {
-                    case "small":
-                        carSize = CarSizeEnum.small;
-                        break;
-                    case "large":
-                        carSize = CarSizeEnum.large;
-                        break;
-                    default:
-                        carSize = CarSizeEnum.midsize;
+                String rsCarSize = carResultSet.getString("size");
+                // Deal with null car sizes
+                if (rsCarSize != null) {
+                    switch (carResultSet.getString("size")) {
+                        case "SMALL":
+                            carSize = CarSizeEnum.small;
+                            break;
+                        case "LARGE":
+                            carSize = CarSizeEnum.large;
+                            break;
+                        default:
+                            carSize = CarSizeEnum.midsize;
+                    }
+                } else
+                {
+                    carSize = CarSizeEnum.midsize;
                 }
                 CarSpec carspec = new CarSpec(carID, carMake, carModel, carYear, carSize);
                 carSpecList.add(carspec);
@@ -143,19 +211,42 @@ public class RentalQueries {
 
 
     //Updates db to "rent" or "return" a car changing status to loanedOut or returned
-    public void rentReturnSelectedCar(String carId, String Status, Date rentDate, Date returnDate){
+    public void rentSelectedCar(String carId, LocalDate rentDate){
         PreparedStatement stmt;
         ResultSet rs;
 
         String query =
-                "UPDATE rentaldb.rental SET rental_status = ?, rent_date = ?, return_date = ? WHERE car_id =? ";
+                "UPDATE rentaldb.rental SET rental_status = ?, rent_date = ? WHERE car_id =? ";
 
         try{
             stmt = dbManager.getConnection().prepareStatement(query);
-            stmt.setString(1, Status);
-            stmt.setDate(2, (java.sql.Date) rentDate);
-            stmt.setDate(3, (java.sql.Date) returnDate);
-            stmt.setString(4, carId);
+            stmt.setString(1, "loanedOut");
+            stmt.setDate(2, java.sql.Date.valueOf(rentDate));
+            stmt.setString(3, carId);
+
+            stmt.executeUpdate();
+            return;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+    }
+
+    //Updates db to "rent" or "return" a car changing status to loanedOut or returned
+    public void returnSelectedCar(String carId, Date returnDate){
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        String query =
+                "UPDATE rentaldb.rental SET rental_status = ?, return_date = ? WHERE car_id =? ";
+
+        try{
+            stmt = dbManager.getConnection().prepareStatement(query);
+            stmt.setString(1, "returned");
+            stmt.setDate(2, (java.sql.Date) returnDate);
+            stmt.setString(3, carId);
 
             stmt.executeUpdate();
             return;

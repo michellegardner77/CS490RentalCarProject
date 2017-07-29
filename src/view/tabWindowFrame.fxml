@@ -128,7 +128,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TabWindowFrameController">
     <children>
-        <Label fx:id="selectedCustomerLabel" layoutX="37.0" layoutY="43.0" prefHeight="17.0" prefWidth="300.0" />
+        <Label fx:id="selectedCustomerLabel" layoutX="37.0" layoutY="43.0" prefHeight="17.0" prefWidth="287.0" />
         <TabPane fx:id="rentCarTabPane" layoutX="31.0" layoutY="74.0" prefHeight="307.0" prefWidth="536.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab fx:id="findCarTab" text="Find Car">
@@ -137,16 +137,15 @@
                             <children>
                                 <TableView fx:id="findCarTable" layoutX="14.0" layoutY="107.0" prefHeight="155.0" prefWidth="509.0">
                                     <columns>
-                                        <TableColumn fx:id="carSpecSelectCol" prefWidth="57.0" text="Select" />
-                                        <TableColumn fx:id="carSpecIDCol" prefWidth="74.0" text="ID" />
-                                        <TableColumn fx:id="carSpecMakeCol" prefWidth="112.0" text="Make" />
-                                        <TableColumn fx:id="carSpecModelCol" prefWidth="112.0" text="Model" />
-                                        <TableColumn fx:id="carSpecYearCol" prefWidth="77.0" text="Year" />
-                                        <TableColumn fx:id="carSpecSizeCol" prefWidth="76.0" text="Size" />
+                                        <TableColumn fx:id="carSpecIDCol" prefWidth="67.0" text="ID" />
+                                        <TableColumn fx:id="carSpecMakeCol" prefWidth="100.0" text="Make" />
+                                        <TableColumn fx:id="carSpecModelCol" prefWidth="101.0" text="Model" />
+                                        <TableColumn fx:id="carSpecYearCol" prefWidth="90.0" text="Year" />
+                                        <TableColumn fx:id="carSpecSizeCol" prefWidth="105.0" text="Size" />
                                     </columns>
                                 </TableView>
                                 <Button fx:id="findCarSearchButton" layoutX="407.0" layoutY="23.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="76.0" text="Search" />
-                                <TextField fx:id="findCarSearchTextField" layoutX="21.0" layoutY="23.0" prefHeight="25.0" prefWidth="353.0" />
+                                <TextField fx:id="findCarSearchTextField" layoutX="21.0" layoutY="23.0" prefHeight="25.0" prefWidth="353.0" onAction="#onEnter"/>
                                 <Button fx:id="rentSelectedButton" layoutX="21.0" layoutY="62.0" mnemonicParsing="false" text="Rent Selected" />
                             </children>
                         </AnchorPane>
@@ -158,11 +157,11 @@
                             <children>
                                 <TableView fx:id="rentedCarsTable" layoutX="14.0" layoutY="84.0" prefHeight="180.0" prefWidth="509.0">
                                     <columns>
-                                        <TableColumn fx:id="rentedSelectCol" prefWidth="57.0" text="Select" />
-                                        <TableColumn fx:id="rentedMakeCol" prefWidth="112.0" text="Make" />
-                                        <TableColumn fx:id="rentedModelCol" prefWidth="130.0" text="Model" />
-                                        <TableColumn fx:id="rentedYearCol" prefWidth="108.0" text="Year" />
-                                        <TableColumn fx:id="rentedDateCol" prefWidth="101.0" text="Rented" />
+                              <TableColumn fx:id="rentedIdCol" prefWidth="57.0" text="ID" />
+                                        <TableColumn fx:id="rentedMakeCol" prefWidth="87.0" text="Make" />
+                                        <TableColumn fx:id="rentedModelCol" prefWidth="116.0" text="Model" />
+                                        <TableColumn fx:id="rentedYearCol" prefWidth="101.0" text="Year" />
+                                        <TableColumn fx:id="rentedDateCol" prefWidth="90.0" text="Rented" />
                                     </columns>
                                 </TableView>
                                 <Button fx:id="returnSelectedButton" layoutX="14.0" layoutY="26.0" mnemonicParsing="false" text="Return Selected" />
@@ -181,7 +180,7 @@
                                         <TableColumn fx:id="returnedCarsModelCol" prefWidth="75.0" text="Model" />
                                         <TableColumn fx:id="returnedCarsYearCol" prefWidth="75.0" text="Year" />
                                         <TableColumn fx:id="returnedCarsRentedDateCol" prefWidth="107.0" text="Rented" />
-                                        <TableColumn fx:id="returnedCarsReturnedDateCol" prefWidth="93.0" text="Returned" />
+                                        <TableColumn fx:id="returnedCarsReturnedDateCol" prefWidth="101.0" text="Returned" />
                                     </columns>
                                 </TableView>
                             </children>

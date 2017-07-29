@@ -142,11 +142,4 @@ public class CarRental {
         });
         return matchingRentals;
     }
-
-    public ArrayList<CarSpec> getCarSpecContainingSubstring(String text) {
-            final ArrayList<CarSpec> matchingCarSpecs = new ArrayList<>();
-
-            //TODO: Search through hash map or list of carspecs with sustring
-            return matchingCarSpecs;
-    }
 }

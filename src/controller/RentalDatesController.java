@@ -1,21 +1,31 @@
 package controller;
 
+import DAL.RentalQueries;
+import core.DBManager;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by mgard on 7/25/2017.
  */
 public class RentalDatesController {
+    RentalQueries rentalQueries = new RentalQueries();
+
     public Button okayDateButton;
     public DatePicker datePicker;
     public String selectedDate = null;
@@ -28,34 +38,12 @@ public class RentalDatesController {
     // reference to current scene
     private Scene currentScene;
 
-    void iniitialize(){
-        datePicker.setConverter(new StringConverter<LocalDate>() {
-            @Override
-            public String toString(LocalDate t) {
-                if(t != null){
-                    return formatter.format(t);
-                }
-                return null;
-            }
+    private List<String> selectedCarIds;
 
-            @Override
-            public LocalDate fromString(String string) {
-                if(string != null && !(string.trim().isEmpty())) {
-                    return LocalDate.parse(string,formatter);
-                }
-                return null;
-            }
-        });
-
-        datePicker.setOnAction(event-> {
-            selectedDate = formatter.format(datePicker.getValue());
-            returnDate = datePicker.getValue();
-        });
-
+    @FXML
+    void initialize(){
         okayDateButton.setOnMouseClicked(event -> {
-            final Node landingNode = (Node) event.getSource();
-            final Stage landingStage = (Stage) landingNode.getScene().getWindow();
-            landingStage.close();
+            goToLastScene();
         });
     }
     private void SetReturnDate(String returnDate){
@@ -81,10 +69,28 @@ public class RentalDatesController {
         this.prevScene=prevScene;
     }
 
-    public void goToLastScene(ActionEvent actionEvent) {
+    public void goToLastScene() {
         if(stage != null && prevScene != null){
+            LocalDate localDate = datePicker.getValue();
+            if(datePicker.getValue() != null) {
+                for (String carId: selectedCarIds) {
+                    rentalQueries.rentSelectedCar(carId, datePicker.getValue());
+                }
+
+                FXMLLoader tabWindowFrameSceneLoader = new FXMLLoader(getClass().getResource("../view/tabWindowFrame.fxml"));
+                // Get the instance of the controller
+                TabWindowFrameController tabWindowFrameController = tabWindowFrameSceneLoader.getController();
+                tabWindowFrameController.loadFindCarTabTable();
+                tabWindowFrameController.loadRentedCarsTabTable();
+                tabWindowFrameController.loadReturnedCarsTabTable();
+
+            }
             stage.setScene(prevScene);
         }
+    }
+
+    public void setSelectedCarIds(List<String> selectedCarIds){
+        this.selectedCarIds = selectedCarIds;
     }
 
 }
