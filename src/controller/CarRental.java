@@ -6,8 +6,8 @@ import model.CarSpec;
 import model.Customer;
 import model.Rental;
 import utillity.CarNotFoundException;
+import core.DBManager;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,14 +34,14 @@ public class CarRental {
             customerList.add(new Customer("Jack", "816-444-4444", "131 NW Nibbles Lane"));
         }
 
-        if (carList.isEmpty()){
+        if (carList.isEmpty()) {
             carList.add(new Car("sheila"));
             carList.add(new Car("dingo"));
             carList.add(new Car("cassowary"));
 
-            carSpecByCar.put(carList.get(0),new CarSpec("sheila", "subaru", "impresa", Year.now(), CarSizeEnum.midsize));
-            carSpecByCar.put(carList.get(1),new CarSpec("dingo", "ford", "focus", Year.now(), CarSizeEnum.midsize));
-            carSpecByCar.put(carList.get(2),new CarSpec("cassowary", "ram", "truck", Year.now(), CarSizeEnum.large));
+            carSpecByCar.put(carList.get(0), new CarSpec("sheila", "subaru", "impresa", "2014", CarSizeEnum.midsize));
+            carSpecByCar.put(carList.get(1), new CarSpec("dingo", "ford", "focus", "1999", CarSizeEnum.midsize));
+            carSpecByCar.put(carList.get(2), new CarSpec("cassowary", "ram", "truck", "2001", CarSizeEnum.large));
 
             availableSet.addAll(carList);
         }
@@ -65,15 +65,11 @@ public class CarRental {
     }
 
     public Customer getCurrentCustomer() {
-        if (currentCustomer == null){
-            throw new RuntimeException();
-        }
-
         return currentCustomer;
     }
 
     public void setCurrentCustomer(Customer customer) {
-        if (customerList.contains(customer)){
+        if (customerList.contains(customer)) {
             currentCustomer = customer;
             return;
         }
@@ -88,7 +84,7 @@ public class CarRental {
     }
 
 
-    public List<CarSpec> getAvailableCars(){
+    public List<CarSpec> getAvailableCars() {
         final List<CarSpec> availableList = new ArrayList<>();
         availableSet.forEach(car -> {
             availableList.add(carSpecByCar.get(car));

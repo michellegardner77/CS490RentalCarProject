@@ -1,4 +1,4 @@
-package controller;
+package core;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 
 public class DBManager {
-    private static final String USERNAME = "adv_user";
-    private static final String PASSWORD = "1234";
+    private static final String USERNAME = "rentalUser";
+    private static final String PASSWORD = "Password1!";
     private static final String SERVER_NAME = "localhost";
     private static final String PORT = "3306";
     private static final String SCHEMA = "rentaldb";

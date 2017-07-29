@@ -7,13 +7,13 @@ public class CarSpec {
     private String carId;
     private String make;
     private String model;
-    private Year year;
+    private String year;
     private CarSizeEnum size;
 
     public CarSpec() {
     }
 
-    public CarSpec(final String carId, final String make, final String model, final Year year, final CarSizeEnum size) {
+    public CarSpec(final String carId, final String make, final String model, final String year, final CarSizeEnum size) {
         this.carId = carId;
         this.make = make;
         this.model = model;
@@ -48,11 +48,11 @@ public class CarSpec {
         return this;
     }
 
-    public Year getYear() {
+    public String getYear() {
         return year;
     }
 
-    public CarSpec setYear(final Year year) {
+    public CarSpec setYear(final String year) {
         this.year = year;
         return this;
     }
@@ -88,5 +88,11 @@ public class CarSpec {
     @Override
     public int hashCode() {
         return Objects.hash(getCarId(), getMake(), getModel(), getYear(), getSize());
+    }
+
+
+   // @Override
+    public boolean contains(final String subString) {
+        return this.toString().toLowerCase().contains(subString.toLowerCase());
     }
 }

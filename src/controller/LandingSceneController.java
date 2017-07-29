@@ -1,29 +1,35 @@
 package controller;
 
+import DAL.RentalQueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Customer;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LandingSceneController {
     CarRental carRental = CarRental.getInstance();
+    RentalQueries rentalQueries = new RentalQueries();
+
+    List<Customer> customerList = null;
+    ObservableList<Customer> customerObservableList = null;
+
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -46,64 +52,173 @@ public class LandingSceneController {
     @FXML // fx:id="rentedCarButton"
     private Button rentedCarButton; // Value injected by FXMLLoader
 
+    // reference to stage
+    private Stage stage;
+    // reference to current parentScene
+    private Scene parentScene;
+    private Customer selectedCustomer;
+
+    // This method is called by the FXMLLoader when initialization is complete
     @FXML
-        // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert customerTable != null : "fx:id=\"customerTable\" was not injected: check your FXML file 'landing.fxml'.";
-        assert customerNameCol != null : "fx:id=\"customerNameCol\" was not injected: check your FXML file 'landing.fxml'.";
-        assert customerTelephoneCol != null : "fx:id=\"customerTelephoneCol\" was not injected: check your FXML file 'landing.fxml'.";
-        assert customerAddressCol != null : "fx:id=\"customerAddressCol\" was not injected: check your FXML file 'landing.fxml'.";
-        assert searchTextField != null : "fx:id=\"searchTextField\" was not injected: check your FXML file 'landing.fxml'.";
-        assert searchButton != null : "fx:id=\"searchButton\" was not injected: check your FXML file 'landing.fxml'.";
-        assert rentCarButton != null : "fx:id=\"rentCarButton\" was not injected: check your FXML file 'landing.fxml'.";
-        assert rentedCarButton != null : "fx:id=\"rentedCarButton\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert customerTable != null : "fx:id=\"customerTable\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert customerNameCol != null : "fx:id=\"customerNameCol\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert customerTelephoneCol != null : "fx:id=\"customerTelephoneCol\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert customerAddressCol != null : "fx:id=\"customerAddressCol\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert searchTextField != null : "fx:id=\"searchTextField\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert searchButton != null : "fx:id=\"searchButton\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert rentCarButton != null : "fx:id=\"rentCarButton\" was not injected: check your FXML file 'landing.fxml'.";
+//        assert rentedCarButton != null : "fx:id=\"rentedCarButton\" was not injected: check your FXML file 'landing.fxml'.";
 
-        ObservableList<Customer> customerList = FXCollections.observableArrayList(carRental.getAllCustomers());
-        initializeCustomerTable(customerList);
+       //ObservableList<Customer> customerList = FXCollections.observableArrayList(carRental.getAllCustomers());
+        loadCustomerTable();
+        //initializeCustomerTable(customerList);
 
-        searchButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(final MouseEvent event) {
-                try {
-                    URL url = new File("src/view/tabWindowFrame.fxml").toURL();
-                    FXMLLoader fxmlLoader = new FXMLLoader();
-                    Parent root1 = (Parent) fxmlLoader.load(url);
-                    Stage stage = new Stage();
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    //stage.initStyle(StageStyle.UNDECORATED);
-                    stage.setTitle("ABC");
-                    stage.setScene(new Scene(root1));
-                    stage.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                final Node landingNode = (Node) event.getSource();
-                final Stage landingStage = (Stage) landingNode.getScene().getWindow();
-                landingStage.close();
+        searchTextField.setOnKeyTyped(event -> {
+            if (searchTextField.getText() == null || searchTextField.getText().isEmpty()){
+                searchCustomers();
             }
         });
 
+        searchButton.setOnMouseClicked(event -> {
+            searchCustomers();
+        });
 
+        rentCarButton.setOnMouseClicked(event -> {
+            Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+            if (selectedCustomer == null) {
+                System.out.println("No customer selected");
+            } else {
+                try {
+//                    carRental.setCurrentCustomer(selectedCustomer);
+                    openTabPaneWindowFindCarsTab(event);
+                } catch (Exception e) {
+                    System.err.println("Bad customer selected, controller threw error");
+                }
+            }
+        });
+
+        rentedCarButton.setOnMouseClicked(event -> {
+            Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+            if (selectedCustomer == null) {
+                System.out.println("No customer selected");
+            } else {
+                try {
+//                    carRental.setCurrentCustomer(selectedCustomer);
+                    openTabPaneWindowRentedCarsTab(event);
+                } catch (Exception e) {
+                    System.err.println("Bad customer selected, controller threw error");
+                }
+            }
+        });
+
+        customerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                this.selectedCustomer = newSelection;
+            }
+        });
     }
 
-    private void initializeCustomerTable(final ObservableList<Customer> list) {
-        ObservableList<Customer> people = FXCollections.observableArrayList(list);
+     public void loadCustomerTable(){
+        // Get list of customers from database
+        customerList = rentalQueries.getAllCustomers();
 
-        TableColumn<Customer, String> nameCol = new TableColumn<Customer, String>("Name");
-        nameCol.setCellValueFactory(
-                new PropertyValueFactory<Customer, String>("name")
-        );
+        // create observableList (list that can change) to added data too then added the returned data from the database to the list
+        customerObservableList= FXCollections.observableList(customerList);
 
-        TableColumn<Customer, String> phoneCol = new  TableColumn<Customer, String>("Phone Number");
-        phoneCol.setCellValueFactory(
-                new PropertyValueFactory<Customer, String>("phone"));
+        // map properties from list data (rows) to match a column in the Scene table columns
+        // new PropertyValueFactory<>("name") this means name in the list object
+        // if SQL returns a row called name and in the list is is called name then you want to map name to whatever column in the parentScene table
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        customerTelephoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        TableColumn<Customer, String> addressCol = new  TableColumn<Customer, String>("Address");
-        addressCol.setCellValueFactory(
-                new PropertyValueFactory<Customer, String>("address")
-        );
+        // tell the table to load the rows from the observable list created above
+        customerTable.setItems(customerObservableList);
+     }
 
-        customerTable.getColumns().setAll(nameCol, phoneCol, addressCol);
-        customerTable.setItems(list);
+
+    private void openTabPaneWindowFindCarsTab(final Event event) {
+        try {
+            // Load FXML file to FXMLoader
+            FXMLLoader tabWindowFrameSceneLoader = new FXMLLoader(getClass().getResource("../view/tabWindowFrame.fxml"));
+
+            // Create initial pane (anchorPane) for parentScene object.
+            AnchorPane tabWindowsAnchorPane = tabWindowFrameSceneLoader.load();
+
+            // Create parentScene
+            Scene tabWindowScene = new Scene(tabWindowsAnchorPane);
+
+            // Get the instance of the controller
+            TabWindowFrameController tabWindowFrameController = tabWindowFrameSceneLoader.getController();
+            tabWindowFrameController.setStage(stage);
+            tabWindowFrameController.setPreviousScene(parentScene);
+            tabWindowFrameController.setCurrentScene(tabWindowScene);
+
+            tabWindowFrameController.selectFindCarTab();
+            tabWindowFrameController.loadFindCarTabTable();
+            tabWindowFrameController.setCurrentCustomer(selectedCustomer);
+            tabWindowFrameController.setSelectedCustomerLabel();
+
+            stage.setScene(tabWindowScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openTabPaneWindowRentedCarsTab(final Event event) {
+        try {
+            // Load FXML file to FXMLoader
+        FXMLLoader tabWindowFrameSceneLoader = new FXMLLoader(getClass().getResource("../view/tabWindowFrame.fxml"));
+
+        // Create initial pane (anchorPane) for parentScene object.
+        AnchorPane tabWindowsAnchorPane = tabWindowFrameSceneLoader.load();
+
+        // Create parentScene
+        Scene tabWindowScene = new Scene(tabWindowsAnchorPane);
+
+        // Get the instance of the controller
+        TabWindowFrameController tabWindowFrameController = tabWindowFrameSceneLoader.getController();
+        tabWindowFrameController.setStage(stage);
+        tabWindowFrameController.setPreviousScene(parentScene);
+        tabWindowFrameController.setCurrentScene(tabWindowScene);
+
+        tabWindowFrameController.selectRentedCarsTab();
+        tabWindowFrameController.setCurrentCustomer(selectedCustomer);
+        tabWindowFrameController.setSelectedCustomerLabel();
+
+        stage.setScene(tabWindowScene);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
+
+    @FXML
+    public void onEnter(ActionEvent ae){
+        searchCustomers();
+    }
+
+    private void searchCustomers(){
+        if (searchTextField.getText() == null) {
+            System.out.println("No search qualification.");
+        } else {
+            try {
+                List<Customer> searchedCustomerList = rentalQueries.searchCustomers(searchTextField.getText());
+                customerTable.setItems(FXCollections.observableArrayList(searchedCustomerList));
+
+            } catch (Exception e) {
+                System.err.println("Search Failed");
+            }
+        }
+    }
+
+    // Method to set the stage for reference
+    public void setStage(Stage stage){
+        this.stage=stage;
+    }
+
+    // Method to set the parent scene for reference. This is so we can go back to it.
+    public void setParentScene(Scene parentScene){
+        this.parentScene= parentScene;
     }
 }
